@@ -14,6 +14,7 @@
         <Label Content="Ускорение" Canvas.Left="1037" Canvas.Top="107" FontSize="18" FontFamily="Segoe UI Semibold" Width="120"/>
         <Label Name ="Speed" Content="0" Canvas.Left="931" Canvas.Top="21" FontSize="20" Foreground="White"/>
         <Button Content="СТОП" Canvas.Left="1037" Canvas.Top="686" Width="120" Height="46" Click="Button_Click" FontFamily="Segoe UI Semibold" Background="Gray"/>
-        <Button Content="СТАРТ" Canvas.Left="1037" Canvas.Top="621" Width="120" Height="46" Click="Button_Click_1" Background="Gray"/>
+        <Button Content="СТАРТ" Canvas.Left="1037" Canvas.Top="621" Width="120" Height="46" Click="Button_Click_1" Background="Gray" FontFamily="Segoe UI Semibold"/>
+        <Image Height="150" Canvas.Left="425" Canvas.Top="325" Width="150" Source="C:\Users\algin\Desktop\111.png"/>
     </Canvas>
 </Window>

@@ -42,14 +42,13 @@ namespace WpfApp1
         public MainWindow()
         {
             InitializeComponent();
-            Planet.Width = 100;
-            Planet.Height = 100;
-            Planet.Fill = System.Windows.Media.Brushes.Green;
-            Planet.Stroke = System.Windows.Media.Brushes.Green;
-            Canvas.SetLeft(Planet, 450);
-            Canvas.SetTop(Planet, 350);
+            Planet.Width = 150;
+            Planet.Height = 150;
+            //Planet.Fill = System.Windows.Media.Brushes.Green;
+            Planet.Stroke = System.Windows.Media.Brushes.AliceBlue;
+            Canvas.SetLeft(Planet, 425);
+            Canvas.SetTop(Planet, 325);
             AnimationCanvas.Children.Add(Planet);
-
         }
 
         //STOP
@@ -63,7 +62,14 @@ namespace WpfApp1
         {
             var timer = new DispatcherTimer();
             timer.Interval = new TimeSpan(0, 0, 0, 0, 5);
+            timer.Tick += Timer_Tick;
+            timer.Start();
 
+
+        }
+
+        private void Timer_Tick(object sender, EventArgs e)
+        {
 
         }
     }
