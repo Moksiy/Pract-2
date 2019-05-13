@@ -51,8 +51,16 @@ namespace WpfApp1
 
         }
 
+        //STOP
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+
+        }
+
+        //START
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            
 
         }
     }
