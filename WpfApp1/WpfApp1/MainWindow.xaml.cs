@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace WpfApp1
 {
@@ -60,7 +61,9 @@ namespace WpfApp1
         //START
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            
+            var timer = new DispatcherTimer();
+            timer.Interval = new TimeSpan(0, 0, 0, 0, 5);
+
 
         }
     }
