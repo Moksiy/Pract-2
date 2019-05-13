@@ -5,9 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfApp1"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Canvas>
-        
-        
+        Title="Спутник" Height="800" Width="1200" ResizeMode="NoResize" Background="#FF404040">
+    <Canvas Name="AnimationCanvas" Height="800" Margin="0,0,183.6,-29.6" Width="1000">
+        <TextBox Name ="K" Height="42" Canvas.Left="1037" TextWrapping="Wrap" Text="" Canvas.Top="52" Width="120" Background="Gray" FontSize="20"/>
+        <TextBox Name ="Acceleration" Height="42" Canvas.Left="1037" TextWrapping="Wrap" Text="" Canvas.Top="138" Width="120" Background="Gray" FontSize="20"/>
+        <Image Height="774" Width="1000" Source="C:\Users\algin\Desktop\1234.jpg" Stretch="Fill"/>
+        <Label Content="Коэффициент K" Canvas.Left="1037" Canvas.Top="21" FontSize="18" FontFamily="Segoe UI Semibold" Width="143"/>
+        <Label Content="Ускорение" Canvas.Left="1037" Canvas.Top="107" FontSize="18" FontFamily="Segoe UI Semibold" Width="120"/>
+        <Label Name ="Speed" Content="0" Canvas.Left="931" Canvas.Top="21" FontSize="20" Foreground="White"/>
+        <Button Content="СТОП" Canvas.Left="1037" Canvas.Top="686" Width="120" Height="46" Click="Button_Click" FontFamily="Segoe UI Semibold" Background="Gray"/>
     </Canvas>
 </Window>

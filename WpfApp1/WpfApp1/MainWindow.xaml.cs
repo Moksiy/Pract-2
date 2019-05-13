@@ -32,9 +32,28 @@ namespace WpfApp1
 
     public partial class MainWindow : Window
     {
+        Ellipse Planet = new Ellipse();
+        Ellipse Sputnik = new Ellipse();
+        Line Trajectory = new Line();
+
+        bool isCollision = false;
+
         public MainWindow()
         {
             InitializeComponent();
+            Planet.Width = 100;
+            Planet.Height = 100;
+            Planet.Fill = System.Windows.Media.Brushes.Green;
+            Planet.Stroke = System.Windows.Media.Brushes.Green;
+            Canvas.SetLeft(Planet, 450);
+            Canvas.SetTop(Planet, 350);
+            AnimationCanvas.Children.Add(Planet);
+
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
