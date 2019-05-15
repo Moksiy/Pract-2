@@ -39,38 +39,85 @@ namespace WpfApp1
 
         bool isCollision = false;
 
+        //Координаты мыши по осям x и y
+        int xmouse, ymouse;
+        //Скорость спутника по осям x и y
+        double xspeed, yspeed;
+        //Ускорение
+        double acc;
+        //Скорость
+        double speed = 0;
+        //Расстояние
+        double distance = 0;
+
         public MainWindow()
         {
             InitializeComponent();
+
+            //PLANET
             Planet.Width = 150;
             Planet.Height = 150;
-            //Planet.Fill = System.Windows.Media.Brushes.Green;
             Planet.Stroke = System.Windows.Media.Brushes.AliceBlue;
             Canvas.SetLeft(Planet, 425);
             Canvas.SetTop(Planet, 325);
             AnimationCanvas.Children.Add(Planet);
+
+            //SPUTNIK
+            Sputnik.Width = 30;
+            Sputnik.Height = 30;
+            Sputnik.Fill = System.Windows.Media.Brushes.LightGray;
+            Sputnik.Stroke = System.Windows.Media.Brushes.DarkSlateGray;
+            Canvas.SetLeft(Sputnik, 485);
+            Canvas.SetTop(Sputnik, 200);
+            AnimationCanvas.Children.Add(Sputnik);
+
+            
         }
 
-        //STOP
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void STOP(object sender, RoutedEventArgs e)
         {
-
+            Canvas.SetLeft(Sputnik, 485);
+            Canvas.SetTop(Sputnik, 200);
+            speed = 0;
+            distance = 0;
+            
         }
 
-        //START
-        private void Button_Click_1(object sender, RoutedEventArgs e)
+        private void START(object sender, RoutedEventArgs e)
         {
-            var timer = new DispatcherTimer();
-            timer.Interval = new TimeSpan(0, 0, 0, 0, 5);
-            timer.Tick += Timer_Tick;
-            timer.Start();
-
+            if (TryParse())
+            {
+                //Передача введенных переменных
+                acc = Convert.ToDouble(Acceleration.Text);
+                var timer = new DispatcherTimer();
+                timer.Interval = new TimeSpan(0, 0, 0, 0, 4);
+                timer.Tick += Timer_Tick;
+                timer.Start();  
+            }
+            else
+            {
+                MessageBox.Show("Некорректный ввод");
+            }
 
         }
 
         private void Timer_Tick(object sender, EventArgs e)
         {
+            Speed.Text = Convert.ToString(speed);
+            Distance.Text = Convert.ToString(distance);
+            Canvas.SetLeft(Sputnik, Canvas.GetLeft(Sputnik) - 1);
+            Canvas.SetTop(Sputnik, Canvas.GetTop(Sputnik) + 1);
+        }
 
+        private bool TryParse()
+        {
+            bool result = false;
+            bool x1b, x2b;
+            double x1, x2;
+            x1b = double.TryParse(Acceleration.Text, out x1);
+            x2b = double.TryParse(K.Text, out x2);
+            if (x1b == true && x2b == true) { result = true; }
+            return result;
         }
     }
 }
