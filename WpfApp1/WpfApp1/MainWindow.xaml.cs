@@ -17,7 +17,7 @@ using System.Windows.Threading;
 namespace WpfApp1
 {
     /// <summary>
-    /// Логика взаимодействия для MainWindow.xaml
+    /// Логика (eё нет) взаимодействия для MainWindow.xaml
     /// </summary>
 
     /*ПП2.1-1-14 Моделирование движения спутника. Нарисуйте следующее движение. Один шар неподвижен,
@@ -36,15 +36,14 @@ namespace WpfApp1
         Ellipse Planet = new Ellipse();
         Ellipse Sputnik = new Ellipse();
         Line Trajectory = new Line();
+        Line Vector = new Line();
 
         bool isCollision = false;
-
-        //Координаты мыши по осям x и y
-        int xmouse, ymouse;
-        //Скорость спутника по осям x и y
-        double xspeed, yspeed;
-        //Ускорение
-        double acc;
+        bool Stop = false;
+        //Координаты мыши по осям x и y для вектора
+        double xmouse, ymouse;
+        //Ускорение и коэффициент
+        double acc, k;
         //Скорость
         double speed = 0;
         //Расстояние
@@ -80,19 +79,28 @@ namespace WpfApp1
             Canvas.SetTop(Sputnik, 200);
             speed = 0;
             distance = 0;
-            
+            Stop = true;
+            xmouse = 0; ymouse = 0;
+            Vector.X1 = 0; Vector.X2 = 0; Vector.Y1 = 0; Vector.Y2 = 0;
         }
 
         private void START(object sender, RoutedEventArgs e)
         {
             if (TryParse())
             {
-                //Передача введенных переменных
-                acc = Convert.ToDouble(Acceleration.Text);
-                var timer = new DispatcherTimer();
-                timer.Interval = new TimeSpan(0, 0, 0, 0, 4);
-                timer.Tick += Timer_Tick;
-                timer.Start();  
+                if (xmouse != 0 && ymouse != 0)
+                {                    
+                    Stop = false;
+                    AnimationCanvas.Children.Remove(Vector);
+                    //Передача введенных переменных
+                    acc = Convert.ToDouble(Acceleration.Text);
+                    k = Convert.ToDouble(K.Text);
+                    var timer = new DispatcherTimer();
+                    timer.Stop();
+                    timer.Interval = new TimeSpan(0, 0, 0, 0, 4);
+                    timer.Tick += Timer_Tick;
+                    timer.Start();
+                }else { MessageBox.Show("Укажите вектор движения спутника"); }            
             }
             else
             {
@@ -103,10 +111,13 @@ namespace WpfApp1
 
         private void Timer_Tick(object sender, EventArgs e)
         {
-            Speed.Text = Convert.ToString(speed);
-            Distance.Text = Convert.ToString(distance);
-            Canvas.SetLeft(Sputnik, Canvas.GetLeft(Sputnik) - 1);
-            Canvas.SetTop(Sputnik, Canvas.GetTop(Sputnik) + 1);
+            if(!isCollision && !Stop)
+            {
+                Speed.Text = Convert.ToString(speed);
+                Distance.Text = Convert.ToString(distance);
+                Canvas.SetLeft(Sputnik, Canvas.GetLeft(Sputnik)+1);
+
+            }
         }
 
         private bool TryParse()
@@ -119,5 +130,21 @@ namespace WpfApp1
             if (x1b == true && x2b == true) { result = true; }
             return result;
         }
+
+        //Обработчик нажатия на кнопку мыши для задания вектора движения спутника
+        private void canvas_Click(object sender, MouseButtonEventArgs e)
+        {
+            if (Vector != null) { AnimationCanvas.Children.Remove(Vector); }
+            Vector.X1 = 0; Vector.X2 = 0;
+            Vector.Y1 = 0; Vector.Y2 = 0;
+            Point point = e.GetPosition(this);
+            xmouse = point.X;
+            ymouse = point.Y;
+            Vector.X1 = 500; Vector.Y1 = 215;
+            Vector.X2 = xmouse; Vector.Y2 = ymouse;
+            Vector.Stroke = System.Windows.Media.Brushes.RoyalBlue;
+            AnimationCanvas.Children.Add(Vector);
+        }
     }
+
 }
