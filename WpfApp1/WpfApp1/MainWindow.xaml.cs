@@ -82,6 +82,8 @@ namespace WpfApp1
             Stop = true;
             xmouse = 0; ymouse = 0;
             Vector.X1 = 0; Vector.X2 = 0; Vector.Y1 = 0; Vector.Y2 = 0;
+            Distance.Text = "0";
+            Speed.Text = "0";
         }
 
         private void START(object sender, RoutedEventArgs e)
@@ -111,15 +113,20 @@ namespace WpfApp1
 
         private void Timer_Tick(object sender, EventArgs e)
         {
+            if(true)
+            {
+                isCollision = true;
+            }
             if(!isCollision && !Stop)
             {
                 Speed.Text = Convert.ToString(speed);
-                Distance.Text = Convert.ToString(distance);
                 Canvas.SetLeft(Sputnik, Canvas.GetLeft(Sputnik)+1);
+                DistanceCounter();
 
             }
         }
 
+        //Проверка корректности ввода
         private bool TryParse()
         {
             bool result = false;
@@ -145,6 +152,27 @@ namespace WpfApp1
             Vector.Stroke = System.Windows.Media.Brushes.RoyalBlue;
             AnimationCanvas.Children.Add(Vector);
         }
+
+        //Метод обновления расстояния от спутника до планеты
+        private void DistanceCounter()
+        {
+            double X1, X2, Y1, Y2;
+            X1 = 500; Y1 = 400;
+            X2 = Canvas.GetLeft(Sputnik);
+            Y2 = Canvas.GetTop(Sputnik);
+            distance = Math.Sqrt(Math.Pow((X2-X1),2)+Math.Pow((Y2-Y1),2));
+            Distance.Text = Convert.ToString(Convert.ToInt16(distance));
+        }
+
+        //обработчик нажатия на пробел
+        private void Space(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Space)
+            {
+                acc += 1;
+            }
+        }
     }
+
 
 }

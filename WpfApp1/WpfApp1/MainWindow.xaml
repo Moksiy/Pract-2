@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:WpfApp1"
         mc:Ignorable="d"
         Title="Спутник" Height="800" Width="1200" ResizeMode="NoResize" Background="#FF404040">
-    <Canvas MouseLeftButtonDown="canvas_Click" Name="AnimationCanvas" Margin="5,0,188.6,-19.6" Width="1000">
+    <Canvas MouseLeftButtonDown="canvas_Click" KeyDown="Space" Name="AnimationCanvas" Margin="5,0,188.6,-19.6" Width="1000">
         <TextBox Name ="K" Height="42" Canvas.Left="1037" TextWrapping="Wrap" Text="" Canvas.Top="52" Width="120" Background="Gray" FontSize="20"/>
         <TextBox Name ="Acceleration" Height="42" Canvas.Left="1037" TextWrapping="Wrap" Text="" Canvas.Top="138" Width="120" Background="Gray" FontSize="20"/>
         <Image Height="774" Width="1000" Source="C:\Users\algin\Desktop\1234.jpg" Stretch="Fill"/>
