@@ -17,5 +17,6 @@
         <Image Height="150" Canvas.Left="425" Canvas.Top="325" Width="150" Source="C:\Users\algin\Desktop\111.png"/>
         <TextBlock Name="Speed" Canvas.Left="925" TextWrapping="Wrap" Text="" Canvas.Top="20" Height="30" Foreground="White" FontFamily="Segoe UI Semibold" FontSize="16"/>
         <TextBlock Name ="Distance" Canvas.Left="925" TextWrapping="Wrap" Text="" Canvas.Top="60" Height="30" Foreground="White" FontFamily="Segoe UI Semibold" FontSize="16"/>
+        <Button Content="+" Width="43" Canvas.Left="1073" Canvas.Top="202" Height="44" Background="Gray" Click="Button_Click"/>
     </Canvas>
 </Window>

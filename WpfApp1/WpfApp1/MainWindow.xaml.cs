@@ -113,16 +113,16 @@ namespace WpfApp1
 
         private void Timer_Tick(object sender, EventArgs e)
         {
-            if(true)
+            if(/**/false)
             {
                 isCollision = true;
             }
             if(!isCollision && !Stop)
             {
+                Distance.Text = Convert.ToString((int)distance);
                 Speed.Text = Convert.ToString(speed);
                 Canvas.SetLeft(Sputnik, Canvas.GetLeft(Sputnik)+1);
-                DistanceCounter();
-
+                DistanceCounter();                
             }
         }
 
@@ -153,6 +153,12 @@ namespace WpfApp1
             AnimationCanvas.Children.Add(Vector);
         }
 
+        //Добавление ускорения
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            
+        }
+
         //Метод обновления расстояния от спутника до планеты
         private void DistanceCounter()
         {
@@ -162,6 +168,12 @@ namespace WpfApp1
             Y2 = Canvas.GetTop(Sputnik);
             distance = Math.Sqrt(Math.Pow((X2-X1),2)+Math.Pow((Y2-Y1),2));
             Distance.Text = Convert.ToString(Convert.ToInt16(distance));
+        }
+
+        //Метод обновления скорости 
+        private void SpeedCounter()
+        {
+
         }
 
         //обработчик нажатия на пробел
