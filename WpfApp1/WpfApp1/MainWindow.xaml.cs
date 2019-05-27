@@ -29,38 +29,53 @@ namespace WpfApp1
 но).Движение рассчитывается на каждом кванте времени исходя из того, что оно в течении кванта рав-
 ноускоренное и прямолинейное.*/
 
+    public struct Planet
+    {
+        //Координаты
+        
+        public double x { get; set; }
+        public double y { get; set; }
 
+        //Скорость
+        public double vx { get; set; }
+        public double vy { get; set; }
+
+        //Масса
+        public double m { get; set; }
+    }
 
     public partial class MainWindow : Window
     {
-        Ellipse Planet = new Ellipse();
+        Ellipse Earth1 = new Ellipse();
         Ellipse Sputnik = new Ellipse();
         Line Trajectory = new Line();
         Line Vector = new Line();
-
+        Planet Earth = new Planet();
+        Planet Satellite = new Planet();
         bool isCollision = false;
         bool Stop = false;
         //Координаты мыши по осям x и y для вектора
         double xmouse, ymouse;
         //Ускорение и коэффициент
-        double acc, k;
-        //Скорость
-        double speed = 0;
+        double acc, k, a;
         //Расстояние
         double distance = 0;
+        const double G = 6.67e-11;
+        double xvector, yvector;
+        
 
         public MainWindow()
         {
             InitializeComponent();
 
             //PLANET
-            Planet.Width = 150;
-            Planet.Height = 150;
-            Planet.Stroke = System.Windows.Media.Brushes.AliceBlue;
-            Canvas.SetLeft(Planet, 425);
-            Canvas.SetTop(Planet, 325);
-            AnimationCanvas.Children.Add(Planet);
-
+            Earth1.Width = 150;
+            Earth1.Height = 150;
+            Earth1.Stroke = System.Windows.Media.Brushes.AliceBlue;
+            Canvas.SetLeft(Earth1, 425);
+            Canvas.SetTop(Earth1, 325);
+            AnimationCanvas.Children.Add(Earth1);
+            
             //SPUTNIK
             Sputnik.Width = 30;
             Sputnik.Height = 30;
@@ -69,21 +84,31 @@ namespace WpfApp1
             Canvas.SetLeft(Sputnik, 485);
             Canvas.SetTop(Sputnik, 200);
             AnimationCanvas.Children.Add(Sputnik);
+            //Параметры для Земли
+            Earth.x = 425;
+            Earth.y = 325;
+            Earth.vx = 0;
+            Earth.vy = 0;
+            Earth.m = 20000;
 
-            
+            //Параметры для спутника
+            Satellite.x = 485;
+            Satellite.y = 200;
+            Satellite.vx = 0;
+            Satellite.vy = 0;
+            Satellite.m = 1;
+            acc = 0;
         }
 
         private void STOP(object sender, RoutedEventArgs e)
         {
             Canvas.SetLeft(Sputnik, 485);
             Canvas.SetTop(Sputnik, 200);
-            speed = 0;
             distance = 0;
             Stop = true;
             xmouse = 0; ymouse = 0;
             Vector.X1 = 0; Vector.X2 = 0; Vector.Y1 = 0; Vector.Y2 = 0;
             Distance.Text = "0";
-            Speed.Text = "0";
         }
 
         private void START(object sender, RoutedEventArgs e)
@@ -91,7 +116,10 @@ namespace WpfApp1
             if (TryParse())
             {
                 if (xmouse != 0 && ymouse != 0)
-                {                    
+                {
+                    Satellite.vx = ((xmouse) - 485)/100;
+                    Satellite.vy = ((ymouse) - 200)/100;
+                    acc = Convert.ToDouble(Acceleration.Text);
                     Stop = false;
                     AnimationCanvas.Children.Remove(Vector);
                     //Передача введенных переменных
@@ -99,7 +127,7 @@ namespace WpfApp1
                     k = Convert.ToDouble(K.Text);
                     var timer = new DispatcherTimer();
                     timer.Stop();
-                    timer.Interval = new TimeSpan(0, 0, 0, 0, 4);
+                    timer.Interval = new TimeSpan(0, 0, 0, 0, 1);
                     timer.Tick += Timer_Tick;
                     timer.Start();
                 }else { MessageBox.Show("Укажите вектор движения спутника"); }            
@@ -120,9 +148,18 @@ namespace WpfApp1
             if(!isCollision && !Stop)
             {
                 Distance.Text = Convert.ToString((int)distance);
-                Speed.Text = Convert.ToString(speed);
-                Canvas.SetLeft(Sputnik, Canvas.GetLeft(Sputnik)+1);
                 DistanceCounter();                
+                a = k/ (Math.Pow(Radius(),2))/Satellite.m;
+                xvector = 500 - (Canvas.GetLeft(Sputnik)+15);
+                yvector = 400 - (Canvas.GetTop(Sputnik)+15);
+                xvector /= Radius();
+                yvector /= Radius();
+                Satellite.vx +=  a * xvector;
+                Satellite.vy +=  a * yvector;
+                Satellite.x += Satellite.vx;
+                Satellite.y += Satellite.vy;
+                Canvas.SetLeft(Sputnik, Satellite.x);
+                Canvas.SetTop(Sputnik, Satellite.y);
             }
         }
 
@@ -156,7 +193,8 @@ namespace WpfApp1
         //Добавление ускорения
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            
+            Satellite.vx += acc;
+            Satellite.vy += acc;
         }
 
         //Метод обновления расстояния от спутника до планеты
@@ -170,12 +208,6 @@ namespace WpfApp1
             Distance.Text = Convert.ToString(Convert.ToInt16(distance));
         }
 
-        //Метод обновления скорости 
-        private void SpeedCounter()
-        {
-
-        }
-
         //обработчик нажатия на пробел
         private void Space(object sender, KeyEventArgs e)
         {
@@ -183,6 +215,16 @@ namespace WpfApp1
             {
                 acc += 1;
             }
+        }
+
+        private double Radius()
+        {
+            double x1, y1, x2, y2;
+            x1 = Canvas.GetLeft(Sputnik) + 15;
+            y1 = Canvas.GetTop(Sputnik) + 15;
+            x2 = 500;
+            y2 = 400;
+            return Math.Sqrt(Math.Pow((x2-x1),2)+Math.Pow((y2-y1),2));
         }
     }
 
