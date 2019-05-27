@@ -29,6 +29,9 @@ namespace WpfApp1
 но).Движение рассчитывается на каждом кванте времени исходя из того, что оно в течении кванта рав-
 ноускоренное и прямолинейное.*/
 
+       
+
+ 
     public struct Planet
     {
         //Координаты
@@ -100,6 +103,11 @@ namespace WpfApp1
             acc = 0;
         }
 
+        /// <summary>
+        /// Обработчик нажатия по кнопке СТОП
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void STOP(object sender, RoutedEventArgs e)
         {
             Canvas.SetLeft(Sputnik, 485);
@@ -111,6 +119,11 @@ namespace WpfApp1
             Distance.Text = "0";
         }
 
+        /// <summary>
+        /// Обработчик нажатия по кнопке СТАРТ
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void START(object sender, RoutedEventArgs e)
         {
             if (TryParse())
@@ -139,9 +152,14 @@ namespace WpfApp1
 
         }
 
+        /// <summary>
+        /// Таймер
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Timer_Tick(object sender, EventArgs e)
         {
-            if(/**/false)
+            if(Radius() <= 90)
             {
                 isCollision = true;
             }
@@ -163,7 +181,10 @@ namespace WpfApp1
             }
         }
 
-        //Проверка корректности ввода
+        /// <summary>
+        /// Проверка корректности ввода
+        /// </summary>
+        /// <returns></returns>
         private bool TryParse()
         {
             bool result = false;
@@ -175,7 +196,11 @@ namespace WpfApp1
             return result;
         }
 
-        //Обработчик нажатия на кнопку мыши для задания вектора движения спутника
+        /// <summary>
+        /// Обработчик нажатия на кнопку мыши для задания вектора движения спутника
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void canvas_Click(object sender, MouseButtonEventArgs e)
         {
             if (Vector != null) { AnimationCanvas.Children.Remove(Vector); }
@@ -190,14 +215,20 @@ namespace WpfApp1
             AnimationCanvas.Children.Add(Vector);
         }
 
-        //Добавление ускорения
+        /// <summary>
+        /// /Добавление ускорения
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            Satellite.vx += acc;
+            Satellite.vx += acc; 
             Satellite.vy += acc;
         }
 
-        //Метод обновления расстояния от спутника до планеты
+        /// <summary>
+        /// Метод обновления расстояния от спутника до планеты
+        /// </summary>
         private void DistanceCounter()
         {
             double X1, X2, Y1, Y2;
@@ -208,15 +239,10 @@ namespace WpfApp1
             Distance.Text = Convert.ToString(Convert.ToInt16(distance));
         }
 
-        //обработчик нажатия на пробел
-        private void Space(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Space)
-            {
-                acc += 1;
-            }
-        }
-
+        /// <summary>
+        /// Метод расчета расстояния между планетами
+        /// </summary>
+        /// <returns></returns>
         private double Radius()
         {
             double x1, y1, x2, y2;
