@@ -51,10 +51,12 @@ namespace WpfApp1
     {
         Ellipse Earth1 = new Ellipse();
         Ellipse Sputnik = new Ellipse();
+        Ellipse Sputnik2 = new Ellipse();
         Line Trajectory = new Line();
         Line Vector = new Line();
         Planet Earth = new Planet();
         Planet Satellite = new Planet();
+        Planet Satellite2 = new Planet();
         bool isCollision = false;
         bool Stop = false;
         //Координаты мыши по осям x и y для вектора
@@ -87,12 +89,23 @@ namespace WpfApp1
             Canvas.SetLeft(Sputnik, 485);
             Canvas.SetTop(Sputnik, 200);
             AnimationCanvas.Children.Add(Sputnik);
+
+            //SPUTNIK2
+            Sputnik2.Width = 30;
+            Sputnik2.Height = 30;
+            Sputnik2.Fill = System.Windows.Media.Brushes.LightGray;
+            Sputnik2.Stroke = System.Windows.Media.Brushes.DarkSlateGray;
+            Canvas.SetLeft(Sputnik2, 485);
+            Canvas.SetTop(Sputnik2, 150);
+            AnimationCanvas.Children.Add(Sputnik2);
+
             //Параметры для Земли
             Earth.x = 425;
             Earth.y = 325;
             Earth.vx = 0;
             Earth.vy = 0;
             Earth.m = 20000;
+            
 
             //Параметры для спутника
             Satellite.x = 485;
@@ -100,6 +113,14 @@ namespace WpfApp1
             Satellite.vx = 0;
             Satellite.vy = 0;
             Satellite.m = 1;
+            acc = 0;
+
+            //Параметры для спутника2
+            Satellite2.x = 485;
+            Satellite2.y = 150;
+            Satellite2.vx = 0;
+            Satellite2.vy = 0;
+            Satellite2.m = 1;
             acc = 0;
         }
 
@@ -112,11 +133,14 @@ namespace WpfApp1
         {
             Canvas.SetLeft(Sputnik, 485);
             Canvas.SetTop(Sputnik, 200);
+            Canvas.SetLeft(Sputnik2, 485);
+            Canvas.SetTop(Sputnik2, 150);
             distance = 0;
             Stop = true;
             xmouse = 0; ymouse = 0;
             Vector.X1 = 0; Vector.X2 = 0; Vector.Y1 = 0; Vector.Y2 = 0;
             Distance.Text = "0";
+
         }
 
         /// <summary>
@@ -132,6 +156,8 @@ namespace WpfApp1
                 {
                     Satellite.vx = ((xmouse) - 485)/100;
                     Satellite.vy = ((ymouse) - 200)/100;
+                    Satellite2.vx = ((xmouse) - 485) / 100;
+                    Satellite2.vy = ((ymouse) - 150) / 100;
                     acc = Convert.ToDouble(Acceleration.Text);
                     Stop = false;
                     AnimationCanvas.Children.Remove(Vector);
@@ -178,6 +204,18 @@ namespace WpfApp1
                 Satellite.y += Satellite.vy;
                 Canvas.SetLeft(Sputnik, Satellite.x);
                 Canvas.SetTop(Sputnik, Satellite.y);
+
+                a = k / (Math.Pow(Radius(), 2)) / Satellite2.m;
+                xvector = 500 - (Canvas.GetLeft(Sputnik2) + 15);
+                yvector = 400 - (Canvas.GetTop(Sputnik2) + 15);
+                xvector /= Radius();
+                yvector /= Radius();
+                Satellite2.vx += a * xvector;
+                Satellite2.vy += a * yvector;
+                Satellite2.x += Satellite2.vx;
+                Satellite2.y += Satellite2.vy;
+                Canvas.SetLeft(Sputnik2, Satellite2.x);
+                Canvas.SetTop(Sputnik2, Satellite2.y);
             }
         }
 
